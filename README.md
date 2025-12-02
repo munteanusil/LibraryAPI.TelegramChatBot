@@ -1,5 +1,4 @@
 📚 Bookstore API Backend
-https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet
 
 
 🚀 Overview
