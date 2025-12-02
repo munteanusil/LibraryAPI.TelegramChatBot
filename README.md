@@ -4,6 +4,9 @@ This repository contains the Backend API implementation for a modern online book
 
 Designed as a robust foundation, this API is the first phase of a larger project aiming for integration into an intelligent bookstore chatbot (via WhatsApp/Telegram APIs) and a possible dedicated Angular Frontend interface.
 
+<img width="392" height="852" alt="image" src="https://github.com/user-attachments/assets/f0b3c53c-2138-4251-8cca-24de2bd3e7b9" />
+<img width="575" height="676" alt="image" src="https://github.com/user-attachments/assets/ac20fce1-ee9a-4276-9a75-0d877c268fd0" />
+
 Key Features
 The API exposes endpoints for the following data management operations:
 
@@ -64,6 +67,9 @@ Performance: Optimization of Entity Framework Core queries using .AsNoTracking()
 Usability: Implementation of pagination and filtering on GET list endpoints.
 
 Testing: Endpoint testing using Postman or the Swagger interface.
+
+
+
 
  Future Vision (Possible Extensions)
 This API serves as the foundation for the following next steps:
