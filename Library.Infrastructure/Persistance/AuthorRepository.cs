@@ -28,7 +28,7 @@ namespace Library.Infrastructure.Persistance
         public async Task DeleteAuthor(int id, CancellationToken ct = default)
         {
             var authorToRemove = await _libraryContext.Authors.FirstOrDefaultAsync(a => a.Id == id);
-            if(authorToRemove != null)
+            if(authorToRemove == null)
             {
                 throw new KeyNotFoundException();
             }

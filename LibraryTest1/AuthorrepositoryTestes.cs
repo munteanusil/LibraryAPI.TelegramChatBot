@@ -1,4 +1,4 @@
-using Library.Application.Interfaces;
+﻿using Library.Application.Interfaces;
 using Library.Domain.Entities;
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Persistance;
@@ -6,12 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 
 
-namespace LibraryTest1
+namespace Library.Tests
 {
     public class AuthorrepositoryTestes
     {
-
-
         [Fact]
         public async Task CreateAuthorShouldSaveAnewAuthorInDb()
         {
@@ -37,37 +35,37 @@ namespace LibraryTest1
             Assert.True(authorCreadted != null);
         }
 
+
         [Fact]
         public async Task UpdateAuthorShouldSaveUpdateIfExists()
         {
             var options = new DbContextOptionsBuilder<LibraryContext>()
-                         .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                         .Options;
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
 
             using var libContext = new LibraryContext(options);
             IAuthorRepository repo = new AuthorRepository(libContext);
             var updatedAuthor = new Author
             {
                 FirstName = "UpdatedValues",
-                LastName = "UpdatedValues",
-                Site = "UpdatedSite",
+                LastName = "UpdateValues",
+                Site = "UpdatedSite"
             };
 
-            var authorToAdd = new Author()
+            var authorToAdd = new Author
             {
                 FirstName = "Test",
-                LastName = "TestLN",
+                LastName = "TestLast",
                 Site = "TestSite",
+            
             };
             await libContext.AddAsync(authorToAdd);
             await libContext.SaveChangesAsync();
 
             Assert.True(authorToAdd.Id != 0);
-
             authorToAdd.FirstName = updatedAuthor.FirstName;
             authorToAdd.LastName = updatedAuthor.LastName;
             authorToAdd.Site = updatedAuthor.Site;
-
             await repo.UpdateAuthor(authorToAdd);
 
             var authorFromDb = await libContext.Authors.FirstOrDefaultAsync(a => a.Id == authorToAdd.Id);
@@ -81,55 +79,67 @@ namespace LibraryTest1
         public async Task UpdateAuthorShouldThrowIfAuthorDoesNotExists()
         {
             var options = new DbContextOptionsBuilder<LibraryContext>()
-                         .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                         .Options;
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
 
             using var libContext = new LibraryContext(options);
             IAuthorRepository repo = new AuthorRepository(libContext);
-       
-            var authorToAdd = new Author()
+            var authorToAdd = new Author
             {
                 Id = 1,
                 FirstName = "Test",
-                LastName = "TestLN",
+                LastName = "TestLast",
                 Site = "TestSite",
+         
             };
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => repo.UpdateAuthor(authorToAdd));
 
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => repo.UpdateAuthor(authorToAdd));
         }
 
-
         [Fact]
-        public async Task DeleteAuthorShouldIfAuthorExists()
+        public async Task DeleteAuthorShouldThrowIfAuthorDoesNotExists()
         {
             var options = new DbContextOptionsBuilder<LibraryContext>()
-                      .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                      .Options;
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            using var libContext = new LibraryContext(options);
+            IAuthorRepository repo = new AuthorRepository(libContext);
+
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => repo.DeleteAuthor(1));
+        }
+
+        [Fact]
+        public async Task DeleteAuthorShouldDeleteIfAuthorExists()
+        {
+            var options = new DbContextOptionsBuilder<LibraryContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
 
             using var libContext = new LibraryContext(options);
             IAuthorRepository repo = new AuthorRepository(libContext);
             var updatedAuthor = new Author
             {
                 FirstName = "UpdatedValues",
-                LastName = "UpdatedValues",
-                Site = "UpdatedSite",
+                LastName = "UpdateValues",
+                Site = "UpdatedSite"
             };
 
-            var dummyAuthor = new Author()
+            var dummyAthor = new Author
             {
                 FirstName = "Test",
-                LastName = "TestLN",
+                LastName = "TestLast",
                 Site = "TestSite",
+                
             };
-            await libContext.AddAsync(dummyAuthor);
+            await libContext.AddAsync(dummyAthor);
             await libContext.SaveChangesAsync();
 
-            Assert.True(dummyAuthor.Id > 0);
-            Assert.True(libContext.Authors.FirstOrDefaultAsync(a => a.Id == dummyAuthor.Id) != null);
+            Assert.True(dummyAthor.Id > 0);
+            Assert.True(await libContext.Authors.FirstOrDefaultAsync(a => a.Id == dummyAthor.Id) != null);
 
-            await repo.DeleteAuthor(dummyAuthor.Id);
-            Assert.True(libContext.Authors.FirstOrDefaultAsync(a => a.Id == dummyAuthor.Id) == null);
-
+            await repo.DeleteAuthor(dummyAthor.Id);
+            Assert.True(await libContext.Authors.FirstOrDefaultAsync(a => a.Id == dummyAthor.Id) == null);
         }
     }
 }

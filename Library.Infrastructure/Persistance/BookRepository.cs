@@ -2,6 +2,7 @@
 using Library.Domain.Common;
 using Library.Domain.Entities;
 using Library.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,22 @@ namespace Library.Infrastructure.Persistance
         {
             _libraryContext = libraryContext;
         }
-        public Task CreateBook(Book book, CancellationToken ct = default)
+        public async Task CreateBook(Book book, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+           _libraryContext.Books.AddAsync(book,ct);
+           _libraryContext.SaveChangesAsync();
         }
 
-        public Task DeleteBook(int id, CancellationToken ct = default)
+        public async Task DeleteBook(int id, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            var bookToRemove = await _libraryContext.Books.FirstOrDefaultAsync(a => a.Id == id);
+            if (bookToRemove == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            _libraryContext.Books.Remove(bookToRemove);
+            await _libraryContext.SaveChangesAsync();
+
         }
 
         public Task<Book> GetBookById(int id, CancellationToken ct = default)
@@ -38,9 +47,10 @@ namespace Library.Infrastructure.Persistance
             throw new NotImplementedException();
         }
 
-        public Task UpdateBook(Book book, CancellationToken ct = default)
+        public async Task UpdateBook(Book book, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            _libraryContext.Books.Update(book);
+            await _libraryContext.SaveChangesAsync();
         }
     }
 }
