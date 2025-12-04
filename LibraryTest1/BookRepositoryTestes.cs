@@ -121,7 +121,7 @@ namespace Library.Tests
                  .Options;
 
             using var libContext = new LibraryContext(options);
-            IAuthorRepository repo = new AuthorRepository(libContext);
+            IBookRepository repo = new BookRepository(libContext);
             var updatedBook = new Book
             {
                 Title = "UpdatedValues",
@@ -142,7 +142,7 @@ namespace Library.Tests
             Assert.True(dummyBook.Id > 0);
             Assert.True(await libContext.Books.FirstOrDefaultAsync(a => a.Id == dummyBook.Id) != null);
 
-            await repo.DeleteAuthor(dummyBook.Id);
+            await repo.DeleteBook(dummyBook.Id);
             Assert.True(await libContext.Books.FirstOrDefaultAsync(a => a.Id == dummyBook.Id) == null);
 
         }

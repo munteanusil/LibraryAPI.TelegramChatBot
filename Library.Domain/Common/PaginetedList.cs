@@ -11,12 +11,12 @@ namespace Library.Domain.Common
 
         public PaginetedList(List<T> items, int pageNumber, int pageTotals)
         {
-            Itmes = items;
+            Items = items;
             PageNumber = pageNumber;
             TotalPages = pageTotals;
 
         }
-        public List<T> Itmes { get; set; }
+        public List<T> Items { get; set; }
 
         public int PageNumber { get; set; }
 

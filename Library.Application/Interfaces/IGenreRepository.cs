@@ -10,13 +10,13 @@ namespace Library.Application.Interfaces
 {
     public interface IGenreRepository
     {
-        Task<PaginetedList<Book>> GetGenres(int page, int pageSize, CancellationToken ct = default);
+        Task<PaginetedList<Genre>> GetGenres(int page, int pageSize, CancellationToken ct = default);
 
-        Task<Book> GetGenreById(int id,CancellationToken ct = default);
+        Task<Genre> GetGenreById(int id,CancellationToken ct = default);
 
-        Task CreateGenre(Book book, CancellationToken ct = default);
-        Task UpdateGenre(Book book, CancellationToken ct = default);
-        Task DeleteGenre(Book book, CancellationToken ct = default);
+        Task CreateGenre(Genre book, CancellationToken ct = default);
+        Task UpdateGenre(Genre book, CancellationToken ct = default);
+        Task DeleteGenre(int id , CancellationToken ct = default);
       
     }
 }

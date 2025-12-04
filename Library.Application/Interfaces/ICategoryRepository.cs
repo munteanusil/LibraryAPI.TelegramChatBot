@@ -10,13 +10,13 @@ namespace Library.Application.Interfaces
 {
     public interface ICategoryRepository
     {
-        Task<PaginetedList<Book>> GetCategorys(int page, int pageSize, CancellationToken ct = default);
+        Task<PaginetedList<Category>> GetCategorys(int page, int pageSize, CancellationToken ct = default);
 
-        Task<Book> GetCategoryById(int id,CancellationToken ct = default);
+        Task<Category> GetCategoryById(int id,CancellationToken ct = default);
 
-        Task CreateCategory(Book book, CancellationToken ct = default);
-        Task UpdateCategory(Book book, CancellationToken ct = default);
-        Task DeleteCategory(Book book, CancellationToken ct = default);
+        Task CreateCategory(Category category, CancellationToken ct = default);
+        Task UpdateCategory(Category category, CancellationToken ct = default);
+        Task DeleteCategory(int id, CancellationToken ct = default);
       
     }
 }
