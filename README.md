@@ -21,10 +21,9 @@ Api working With front end Telegram Chat Bot:
 Screen form Db, I used SQLite for simplicity but the project can be compatible and you can change the db provider to any SQL Server instance.
 
 
-<img width="717" height="379" alt="Screenshot 2025-12-10 105406" src="https://github.com/user-attachments/assets/204cd08e-30bb-4b82-b730-3d0ee85bdf94" />
+<img width="332" height="315" alt="Screenshot 2025-12-10 105406" src="https://github.com/user-attachments/assets/204cd08e-30bb-4b82-b730-3d0ee85bdf94" />
 
- Core Features
- Book Management
+ Core Features : - Book Management
 Create: Add new books with comprehensive metadata
 
 Read: Retrieve books with pagination, filtering, and detailed views
