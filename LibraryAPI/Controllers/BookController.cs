@@ -20,18 +20,12 @@ namespace LibraryAPI.Controllers
         private readonly ILogger<BookController> _logger;
         private readonly IBookRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IValidator<CreateBookDto> _validator;
-        private readonly IValidator<PaginatedDto> _paginatedValidator;
-
+      
         public BookController(IBookRepository repository,
-            IMapper mapper,
-            IValidator<CreateBookDto> validator,
-            IValidator<PaginatedDto> paginatedValidator)
+            IMapper mapper)
         {
             _repository= repository;
-            _mapper= mapper;
-            _validator = validator;
-            _paginatedValidator= paginatedValidator;
+            _mapper = mapper;
         }
 
 
@@ -40,7 +34,7 @@ namespace LibraryAPI.Controllers
         {
                var bookToCreate = _mapper.Map<Book>(bookDto); 
                 await _repository.CreateBook(bookToCreate, cancellationToken);
-                return CreatedAtAction(nameof(Get),new {id = bookToCreate.Id},bookToCreate);
+                return CreatedAtAction(nameof(Get),new {id = bookToCreate.Id},_mapper.Map<BookDto>(bookToCreate));
             
 
         }

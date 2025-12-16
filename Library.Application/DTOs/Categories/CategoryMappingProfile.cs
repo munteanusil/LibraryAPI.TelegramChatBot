@@ -14,11 +14,17 @@ namespace Library.Application.DTOs.Categories
         {
 
             CreateMap<Category, CategoryDto>()
-             .ReverseMap();
+               .ReverseMap()
+               .ForMember(dest => dest.Id, opt => opt.Ignore()); 
 
-           
             CreateMap<CreateCategoryDto, Category>()
-                 .ReverseMap();
+                .ReverseMap();
+
+         
+            CreateMap<CategoryDto, Category>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Books, opt => opt.Ignore());
         }
     }
 }

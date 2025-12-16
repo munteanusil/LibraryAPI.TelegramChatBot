@@ -30,54 +30,20 @@ namespace LibraryAPI.Controllers
             _paginatedValidator = paginatedValidator;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Post(CreateAuthorDto authorDto, CancellationToken cancellationToken)
-        //{
-        //    var validationResult = await _validator.ValidateAsync(authorDto, cancellationToken);
-        //    if (validationResult.IsValid)
-        //    {
-        //        var authorToCreate = _mapper.Map<Author>(authorDto);
-        //        await _repository.CreateAuthor(authorToCreate, cancellationToken);
-        //        return CreatedAtAction(nameof(Get),new { id = authorToCreate.Id }, _mapper.Map<AuthorDto>(authorToCreate));
-        //    }
-
-        //    return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
-
-        //}
         [HttpPost]
-        public async Task<IActionResult> Post(CreateAuthorDto authorDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> Post([FromBody] CreateAuthorDto authorDto, CancellationToken cancellationToken)
         {
-            try
+            var validationResult = await _validator.ValidateAsync(authorDto, cancellationToken);
+            if (validationResult.IsValid)
             {
-                // 1. Validarea
-                var validationResult = await _validator.ValidateAsync(authorDto, cancellationToken);
-                if (!validationResult.IsValid)
-                {
-                    return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
-                }
-
-                // 2. Maparea Author
                 var authorToCreate = _mapper.Map<Author>(authorDto);
-
-                // 3. Salvarea în DB
                 await _repository.CreateAuthor(authorToCreate, cancellationToken);
-
-                // 4. Maparea Răspunsului (AICI CRED CĂ CRAPĂ)
-                var resultDto = _mapper.Map<AuthorDto>(authorToCreate);
-
-                return CreatedAtAction(nameof(Get), new { id = authorToCreate.Id }, resultDto);
+                return CreatedAtAction(nameof(Get), new { id = authorToCreate.Id }, _mapper.Map<AuthorDto>(authorToCreate));
             }
-            catch (Exception ex)
-            {
-                // Asta ne va arăta eroarea reală (InnerException este cheia)
-                return StatusCode(500, new
-                {
-                    Error = ex.Message,
-                    InnerError = ex.InnerException?.Message,
-                    StackTrace = ex.StackTrace
-                });
-            }
+
+            return BadRequest(validationResult.Errors.Select(e => e.ErrorMessage));
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PaginatedDto dto, CancellationToken cancellationToken)
@@ -98,7 +64,7 @@ namespace LibraryAPI.Controllers
         public async Task<IActionResult> Get(int id, CancellationToken cancellationToken)
         {
             var author = await _repository.GetAuthorById(id, cancellationToken);
-            if(author == null)
+            if (author == null)
             {
                 return NotFound();
             }

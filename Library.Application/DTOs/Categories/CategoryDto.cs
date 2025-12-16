@@ -10,7 +10,7 @@ namespace Library.Application.DTOs.Categories
     {
         public int Id { get; set; }
 
-        public int Books { get; set; }
+        //public int Books { get; set; }
 
         public override string ToString()
         {
