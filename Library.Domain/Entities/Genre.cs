@@ -12,6 +12,6 @@ namespace Library.Domain.Entities
 
         public string Name { get; set; }
     
-        public ICollection<AuthorGeneres> AuthorGeneres { get; set; }
+        public ICollection<AuthorGenres> AuthorGeneres { get; set; }
     }
 }

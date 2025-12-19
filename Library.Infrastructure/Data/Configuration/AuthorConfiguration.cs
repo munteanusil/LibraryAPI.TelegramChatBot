@@ -32,7 +32,7 @@ namespace Library.Infrastructure.Data.Configuration
                   .HasForeignKey(b => b.AuthorId)
                   .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(p => p.AuthorGeneres )
+            builder.HasMany(p => p.AuthorGenres )
                   .WithOne(b => b.Author)
                   .HasForeignKey(b => b.AuthorId)
                   .OnDelete(DeleteBehavior.Restrict);

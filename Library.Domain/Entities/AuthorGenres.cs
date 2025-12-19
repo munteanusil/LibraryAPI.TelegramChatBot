@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Library.Domain.Entities
 {
-    public class AuthorGeneres
+    public class AuthorGenres
     {
 
-        public AuthorGeneres()
+        public AuthorGenres()
         {
             
         }
 
-        public AuthorGeneres(int authorid,int genreId)
+        public AuthorGenres(int authorid,int genreId)
         {
             authorid = authorid;
             GenreId = genreId;

@@ -57,7 +57,7 @@ namespace Library.Tests
             await libContext.Authors.AddAsync(author);
             await libContext.SaveChangesAsync();
 
-            await libContext.AuthorGeneres.AddAsync(new AuthorGeneres
+            await libContext.AuthorGeneres.AddAsync(new AuthorGenres
             {
                 AuthorId = author.Id,
                 GenreId = gen.Id

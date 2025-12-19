@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Data.Configuration
 {
-    public class AuthorGenereConfiguration : IEntityTypeConfiguration<AuthorGeneres>
+    public class AuthorGenereConfiguration : IEntityTypeConfiguration<AuthorGenres>
     {
-        public void Configure(EntityTypeBuilder<AuthorGeneres> builder)
+        public void Configure(EntityTypeBuilder<AuthorGenres> builder)
         {
             builder.ToTable("author_genres");
             builder.HasKey(p => new { p.AuthorId,p.GenreId});
 
           
             builder.HasOne(b => b.Author)
-                    .WithMany(c => c.AuthorGeneres)
+                    .WithMany(c => c.AuthorGenres)
                     .HasForeignKey(b => b.AuthorId)
                     .OnDelete(DeleteBehavior.Restrict);
 

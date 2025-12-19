@@ -33,7 +33,7 @@ namespace Library.Domain.Entities
  
         public string? Site { get; set; }
 
-        public ICollection<AuthorGeneres>? AuthorGeneres { get; set; }
+        public ICollection<AuthorGenres>? AuthorGenres { get; set; }
 
         public ICollection<Book>? Books { get; set; }
     }

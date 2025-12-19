@@ -13,9 +13,10 @@ namespace Library.Application.DTOs.Authors
         public AuthorMappingProfile()
         {
             CreateMap<CreateAuthorDto, Author>()
-                 .ForMember(a =>  a.AuthorGeneres,dest =>dest.MapFrom( s =>s.GenreIds.Select(g =>new AuthorGeneres (0,g ))))
+                 .ForMember(a =>  a.AuthorGenres,dest =>dest.MapFrom( s =>s.GenreIds.Select(g =>new AuthorGenres (0,g ))))
                  .ReverseMap();
             CreateMap<AuthorDto, Author>()
+                .ForMember(a => a.AuthorGenres, dest => dest.MapFrom(s => s.GenreIds.Select(g => new AuthorGenres(s.Id, g))))
                 .ReverseMap();
         }
     }
