@@ -30,6 +30,7 @@ namespace Library.Infrastructure.Extensions
             services.AddScoped<IAuthorRepository,AuthorRepository>();
             services.AddScoped<ICategoryRepository,CategoryRepository>();
             services.AddScoped<IGenreRepository,GenreRepository>();
+            services.AddScoped<IUserRepository,UserRepository>();
 
             return services;
         }

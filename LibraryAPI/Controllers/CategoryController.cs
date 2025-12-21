@@ -6,6 +6,7 @@ using Library.Application.DTOs.Categories;
 using Library.Application.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
@@ -14,6 +15,7 @@ namespace LibraryAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    
     public class CategoryController : Controller
     {
         private readonly ILogger<CategoryController> _logger;

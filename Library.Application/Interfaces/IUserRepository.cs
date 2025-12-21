@@ -9,7 +9,7 @@ namespace Library.Application.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<User> GetUserByEmail (string email,CancellationToken ct =default);
+        public Task<User?> GetUserByEmail (string email,CancellationToken ct =default);
 
         public Task CreateUser(User user,CancellationToken ct = default);
     }

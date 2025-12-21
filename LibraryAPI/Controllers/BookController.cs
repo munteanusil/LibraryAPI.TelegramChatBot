@@ -7,6 +7,7 @@ using Library.Application.DTOs.Books;
 using Library.Application.Interfaces;
 using Library.Domain.Common;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ namespace LibraryAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+   
     public class BookController : Controller
     {
         private readonly ILogger<BookController> _logger;
