@@ -1,5 +1,11 @@
+using Google.Apis.Auth;
 using Library.Application.Interfaces;
+using Library.Infrastructure.Configurations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.FeatureManagement.FeatureFilters;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace AuthApi.Controllers
 {
@@ -8,22 +14,49 @@ namespace AuthApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IGoogleService _googleService;
+        private readonly GoogleConfigurations _googleConfiguration;
 
-        public AuthController(IUserRepository userRepository)
+        public AuthController(IGoogleService googleService,
+            IUserRepository userRepository,
+            IJwtTokenGenerator jwtTokenGenerator,
+            IOptions<GoogleConfigurations> googleConfiguration)
         {
-           _userRepository = userRepository;
+            _googleService = googleService;
+            _userRepository = userRepository;
+            _jwtTokenGenerator = jwtTokenGenerator;
+            _googleConfiguration = googleConfiguration.Value;
+            
         }
 
         [HttpGet]
         public async Task<IActionResult> SignIn()
         {
-            return Ok();
+            var url = _googleService.GetRedirectLink();
+            return Redirect(url);
         }
 
         [HttpGet]
         public async Task<IActionResult> GoogleCallBack(string code,CancellationToken cancelationToken  )
         {
-            return Ok();
+            GoogleJsonWebSignature.Payload payload;
+            var idToken = await _googleService.GetIdTocken(code);
+            payload = await GoogleJsonWebSignature.ValidateAsync(idToken,new GoogleJsonWebSignature.ValidationSettings
+            {
+                Audience = new[] { _googleConfiguration.ClientId }
+            });
+
+            var user = await _userRepository.GetUserByEmail(payload.Email);
+            if(user == null)
+            {
+                user = new Library.Domain.Entities.User
+                {
+                    Email = payload.Email,
+                };
+                await _userRepository.CreateUser(user); 
+            }
+            return Ok(idToken);
         }
     }
 }

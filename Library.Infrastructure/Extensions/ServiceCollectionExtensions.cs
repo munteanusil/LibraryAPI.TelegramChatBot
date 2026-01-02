@@ -9,10 +9,13 @@ using FluentValidation;
 using Library.Application.DTOs.Books;
 using Library.Application.DTOs.Categories;
 using Library.Application.DTOs.Genres;
+using Library.Infrastructure.ExternalServices;
+using Library.Infrastructure.Configurations;
+using Library.Infrastructure.Implementations;
 
 namespace Library.Infrastructure.Extensions
 {
-    public static class SystemCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
 
         public static IServiceCollection ConfigureEFCore(this IServiceCollection services,IConfiguration configuration)
@@ -49,5 +52,18 @@ namespace Library.Infrastructure.Extensions
             services.AddValidatorsFromAssemblyContaining<CreateAuthorValidator>();
             return services;
         }
+
+        public static IServiceCollection ConfigureAuthService(this IServiceCollection services,IConfiguration configuration)
+        {
+            services.AddScoped<IGoogleService, GoogleService>();
+            services.AddScoped<IJwtTokenGenerator,JwtTokenGenerator>();
+            services.Configure<GoogleConfigurations>(configuration.GetSection(GoogleConfigurations.SectionName));
+            services.AddHttpClient<IGoogleService,GoogleService>(client =>
+            {
+                client.BaseAddress = new Uri(configuration[$"{GoogleConfigurations.SectionName}:TokenUrl"]);
+            });
+            return services;
+        }
+        
     }
 }

@@ -41,7 +41,16 @@ namespace Library.Infrastructure.ExternalServices
 
         public string GetRedirectLink()
         {
-            throw new NotImplementedException();
+            var scope = "openid email profile";
+
+            var url =
+                $"{_configuration.BaseUrl}" +
+                $"client_id={_configuration.ClientId}" +
+                $"&redirect_uri={Uri.EscapeDataString(_configuration.RedirectPath)}" +
+                $"&response_type=code" +
+                $"&scope={Uri.EscapeDataString(scope)}";
+
+            return url;
         }
     }
 }
