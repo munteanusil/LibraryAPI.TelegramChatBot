@@ -1,6 +1,9 @@
 using Library.Infrastructure.Extensions;
 using LibraryAPI.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 
 
@@ -23,6 +26,23 @@ namespace LibraryAPI
             builder.Services.ConfigureRepositories();
             builder.Services.ConfigureAutoMapper();
             builder.Services.ConfigureValidation();
+            builder.Services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = "",
+                ValidAudience = "",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(""))
+
+            });
             
                 
             var app = builder.Build();

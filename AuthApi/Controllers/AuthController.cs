@@ -56,7 +56,8 @@ namespace AuthApi.Controllers
                 };
                 await _userRepository.CreateUser(user); 
             }
-            return Ok(idToken);
+            var token = _jwtTokenGenerator.GenerateToken(user);
+            return Ok(token);
         }
     }
 }
